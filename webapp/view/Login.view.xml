@@ -1,0 +1,26 @@
+<mvc:View controllerName="qmportal.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    displayBlock="true">
+    <App>
+        <Page title="Quality Management Portal" showHeader="false">
+             <VBox alignItems="Center" justifyContent="Center" height="100%" class="sapUiSmallMargin">
+                <Panel width="400px" headerText="Quality Engineer Login" class="sapUiResponsiveMargin">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="Username" labelFor="usernameInput"/>
+                            <Input id="usernameInput" placeholder="Enter Username" />
+                            
+                            <Label text="Password" labelFor="passwordInput" class="sapUiSmallMarginTop"/>
+                            <Input id="passwordInput" type="Password" placeholder="Enter Password" />
+                            
+                            <Button text="Login" type="Emphasized" width="100%" press="onLogin" class="sapUiSmallMarginTop"/>
+                        </VBox>
+                    </content>
+                </Panel>
+            </VBox>
+        </Page>
+    </App>
+</mvc:View>

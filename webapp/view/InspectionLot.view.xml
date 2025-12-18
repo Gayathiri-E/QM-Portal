@@ -1,0 +1,48 @@
+<mvc:View controllerName="qmportal.controller.InspectionLot"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <Page id="inspectionLotPage" title="Inspection Lots" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <Table id="inspectionTable" items="{/ZQM_INSPECT777}" mode="SingleSelectMaster" selectionChange="onItemPress" growing="true" growingThreshold="20">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Inspection Lots" level="H2"/>
+                        <ToolbarSpacer/>
+                        <SearchField placeholder="Search Inspection Lot" search="onSearch"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column><Text text="Inspection Lot" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Material" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Description" /></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="Plant" /></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="Type" /></Column>
+                    <Column hAlign="End"><Text text="Quantity" /></Column>
+                    <Column hAlign="Center"><Text text="Start Date" /></Column>
+                    <Column hAlign="Center"><Text text="End Date" /></Column>
+                    <Column hAlign="Center"><Text text="Status" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation">
+                        <cells>
+                            <ObjectIdentifier title="{InspectionLot}" text="{CreatedDate}" />
+                            <Text text="{MaterialNumber}" />
+                            <Text text="{MaterialDesc}" />
+                            <Text text="{Plant}" />
+                            <Text text="{InspectionType}" />
+                            <ObjectNumber number="{LotQuantity}" unit="{UoM}" />
+                            <Text text="{path: 'StartDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' }}" />
+                            <Text text="{path: 'EndDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy' }}" />
+                            <ObjectStatus 
+                                text="{= ${UsageDecisionCode} ? 'Decided' : 'Pending' }" 
+                                state="{= ${UsageDecisionCode} ? 'Success' : 'Warning' }" 
+                                icon="{= ${UsageDecisionCode} ? 'sap-icon://accept' : 'sap-icon://pending' }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

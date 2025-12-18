@@ -1,0 +1,36 @@
+<mvc:View controllerName="qmportal.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    displayBlock="true">
+    <Page title="Quality Engineer Dashboard" showNavButton="false">
+        <headerContent>
+            <Button icon="sap-icon://log" text="Logout" press="onLogout" type="Transparent"/>
+        </headerContent>
+        <content>
+            <VBox class="sapUiMediumMargin" justifyContent="Center" alignItems="Center">
+                 <!-- Using Generic Tiles in a FlexBox for responsiveness -->
+                 <HBox wrap="Wrap" justifyContent="Center">
+                    <GenericTile class="sapUiTinyMargin" header="Inspection Lot" subheader="View All" press="onPressInspection">
+                        <TileContent>
+                            <ImageContent src="sap-icon://inspection" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile class="sapUiTinyMargin" header="Result Recording" subheader="Record Results" press="onPressRecording">
+                        <TileContent>
+                            <ImageContent src="sap-icon://clipboard" />
+                        </TileContent>
+                    </GenericTile>
+
+                    <GenericTile class="sapUiTinyMargin" header="Usage Decision" subheader="Make Decision" press="onPressDecision">
+                        <TileContent>
+                            <ImageContent src="sap-icon://accept" />
+                        </TileContent>
+                    </GenericTile>
+                 </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

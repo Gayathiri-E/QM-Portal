@@ -1,0 +1,44 @@
+<mvc:View controllerName="qmportal.controller.ResultRecording"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <Page id="resultRecordingPage" title="Result Recording" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <ObjectHeader
+                title="{InspectionLot}"
+                number="{LotQuantity}"
+                numberUnit="{UoM}"
+                intro="Inspection Lot">
+                <attributes>
+                    <ObjectAttribute text="{MaterialNumber} - {MaterialDesc}" />
+                    <ObjectAttribute text="Plant: {Plant}" />
+                    <ObjectAttribute text="Status: {= ${UsageDecisionCode} ? 'Decided' : 'Pending' }" />
+                </attributes>
+            </ObjectHeader>
+            
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Record Results">
+                <f:content>
+                    <Label text="Unrestricted Stock" />
+                    <Input value="{UnrestrictedQty}" type="Number" editable="{viewModel>/editable}" />
+                    
+                    <Label text="Blocked Stock" />
+                    <Input value="{BlockedQty}" type="Number" editable="{viewModel>/editable}" />
+                    
+                    <Label text="Production Stock" />
+                    <Input value="{ProductionQty}" type="Number" editable="{viewModel>/editable}" />
+                    
+                    <Label text="Total Recorded" />
+                    <Text text="{= parseFloat(${UnrestrictedQty} || 0) + parseFloat(${BlockedQty} || 0) + parseFloat(${ProductionQty} || 0) }" />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button text="Save Results" type="Emphasized" press="onSave" enabled="{viewModel>/editable}" />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

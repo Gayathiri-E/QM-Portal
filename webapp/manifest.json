@@ -16,22 +16,12 @@
       "toolsId": "a6df09d7-6e09-4a7e-8497-0e68e832fd45"
     },
     "dataSources": {
-      "Z777_QMSERVICEBINDING_VAN": {
-        "uri": "/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Annotations(TechnicalName='Z777_QMSERVICEBINDING_VAN',Version='0001')/$value/",
-        "type": "ODataAnnotation",
-        "settings": {
-          "localUri": "localService/mainService/Z777_QMSERVICEBINDING_VAN.xml"
-        }
-      },
       "mainService": {
         "uri": "/sap/opu/odata/sap/Z777_QMSERVICEBINDING/",
         "type": "OData",
         "settings": {
-          "annotations": [
-            "Z777_QMSERVICEBINDING_VAN"
-          ],
-          "localUri": "localService/mainService/metadata.xml",
-          "odataVersion": "2.0"
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
         }
       }
     }
@@ -58,7 +48,11 @@
       "minUI5Version": "1.120.14",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.microchart": {},
+        "sap.ui.layout": {},
+        "sap.ui.unified": {}
       }
     },
     "contentDensities": {
@@ -75,7 +69,12 @@
       "": {
         "dataSource": "mainService",
         "preload": true,
-        "settings": {}
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        }
+      },
+      "session": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {
@@ -88,36 +87,83 @@
     "routing": {
       "config": {
         "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "qmportal.view",
         "controlAggregation": "pages",
         "controlId": "app",
-        "transition": "slide",
-        "type": "View",
-        "viewType": "XML",
-        "path": "qmportal.view",
-        "async": true,
-        "viewPath": "qmportal.view"
+        "clearControlAggregation": false
       },
       "routes": [
         {
-          "name": "Routeapp",
-          "pattern": ":?query:",
-          "target": [
-            "Targetapp"
-          ]
+          "name": "RouteLogin",
+          "pattern": "",
+          "target": "TargetLogin"
+        },
+        {
+          "name": "RouteDashboard",
+          "pattern": "dashboard",
+          "target": "TargetDashboard"
+        },
+        {
+          "name": "RouteInspectionLot",
+          "pattern": "inspection",
+          "target": "TargetInspectionLot"
+        },
+        {
+          "name": "RouteResultRecording",
+          "pattern": "recording/{InspectionLot}",
+          "target": "TargetResultRecording"
+        },
+        {
+          "name": "RouteUsageDecision",
+          "pattern": "decision/{InspectionLot}",
+          "target": "TargetUsageDecision"
         }
       ],
       "targets": {
-        "Targetapp": {
-          "id": "app",
-          "name": "app"
+        "TargetLogin": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Login",
+          "viewName": "Login"
+        },
+        "TargetDashboard": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Dashboard",
+          "viewName": "Dashboard"
+        },
+        "TargetInspectionLot": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "InspectionLot",
+          "viewName": "InspectionLot"
+        },
+        "TargetResultRecording": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "ResultRecording",
+          "viewName": "ResultRecording"
+        },
+        "TargetUsageDecision": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "UsageDecision",
+          "viewName": "UsageDecision"
         }
       }
     },
     "rootView": {
       "viewName": "qmportal.view.App",
       "type": "XML",
-      "id": "App",
-      "async": true
+      "async": true,
+      "id": "app"
     }
   }
 }
