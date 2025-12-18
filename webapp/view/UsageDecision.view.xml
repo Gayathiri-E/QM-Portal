@@ -1,48 +1,63 @@
-<mvc:View controllerName="qmportal.controller.UsageDecision"
+<mvc:View
+    controllerName="qmportal.controller.UsageDecision"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
-    xmlns:core="sap.ui.core"
     displayBlock="true">
-    <Page id="usageDecisionPage" title="Usage Decision" showNavButton="true" navButtonPress="onNavBack">
+
+    <Page title="Usage Decision" showNavButton="true" navButtonPress="onNavBack">
+
         <content>
-            <ObjectHeader
-                title="{InspectionLot}"
-                number="{LotQuantity}"
-                numberUnit="{UoM}"
-                intro="Inspection Lot">
-                <statuses>
-                    <ObjectStatus text="{= ${UsageDecisionCode} ? 'Decided' : 'Pending' }" state="{= ${UsageDecisionCode} ? 'Success' : 'Warning' }"/>
-                </statuses>
-                <attributes>
-                    <ObjectAttribute text="{MaterialNumber} - {MaterialDesc}" />
-                </attributes>
-            </ObjectHeader>
-            
-            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Make Usage Decision">
-                <f:content>
-                    <Label text="Recorded Quantity" />
-                    <Text text="{= parseFloat(${UnrestrictedQty} || 0) + parseFloat(${BlockedQty} || 0) + parseFloat(${ProductionQty} || 0) }" />
-                    
-                    <Label text="UD Code" />
-                    <ComboBox selectedKey="{UsageDecisionCode}" enabled="{viewModel>/editable}">
-                        <core:Item key="A" text="A - Accepted" />
-                        <core:Item key="R" text="R - Rejected" />
-                    </ComboBox>
-                    
-                    <Label text="Quality Score" />
-                    <Input value="{QualityScore}" type="Number" enabled="{viewModel>/editable}" />
-                    
-                    <Label text="Follow-Up Action" />
-                    <Input value="{FollowUpAction}" enabled="{viewModel>/editable}" />
-                </f:content>
-            </f:SimpleForm>
+
+            <!-- SEARCH -->
+            <VBox class="sapUiMediumMargin">
+                <Label text="Search Inspection Lot"/>
+                <HBox>
+                    <Input id="lotInput" width="300px" placeholder="Enter Inspection Lot"/>
+                    <Button text="Search" press="onSearch" type="Emphasized" class="sapUiSmallMarginBegin"/>
+                </HBox>
+            </VBox>
+
+            <!-- DATA -->
+            <VBox visible="{viewModel>/showData}" class="sapUiMediumMargin">
+
+                <Title text="Usage Decision Details"/>
+
+                <f:SimpleForm layout="ResponsiveGridLayout">
+
+                    <Label text="Inspection Lot"/>
+                    <Text text="{usage>/InspectionLotNo}"/>
+
+                    <Label text="Plant"/>
+                    <Text text="{usage>/Plant}"/>
+
+                    <Label text="Usage Decision Code"/>
+                    <Text text="{usage>/UsageDecisionCode}"/>
+
+                    <Label text="Decision By"/>
+                    <Text text="{usage>/DecisionBy}"/>
+
+                    <Label text="Quality Score"/>
+                    <Text text="{usage>/QualityScore}"/>
+
+                </f:SimpleForm>
+
+                <HBox class="sapUiMediumMarginTop">
+    <Button
+        text="Approve"
+        type="Accept"
+        press="onApprove"/>
+
+    <Button
+        text="Reject"
+        type="Reject"
+        class="sapUiSmallMarginBegin"
+        press="onReject"/>
+</HBox>
+
+
+            </VBox>
+
         </content>
-        <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button text="Submit Decision" type="Accept" press="onSubmit" enabled="{viewModel>/editable}" />
-            </OverflowToolbar>
-        </footer>
     </Page>
 </mvc:View>

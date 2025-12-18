@@ -1,42 +1,28 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/m/MessageBox"
-], function (Controller, MessageBox) {
+    "sap/ui/core/mvc/Controller"
+], function (Controller) {
     "use strict";
 
     return Controller.extend("qmportal.controller.Dashboard", {
-        onInit: function () {
-            // Check session?
-        },
 
+        // Inspection List
         onPressInspection: function () {
-            this.getOwnerComponent().getRouter().navTo("RouteInspectionLot", {
-                query: {
-                    mode: "view"
-                }
-            });
+            this.getOwnerComponent()
+                .getRouter()
+                .navTo("RouteInspectionLot");
         },
+onPressRecording: function () {
+    this.getOwnerComponent().getRouter().navTo("RouteResultRecording");
+},
 
-        onPressRecording: function () {
-            this.getOwnerComponent().getRouter().navTo("RouteInspectionLot", {
-                query: {
-                    mode: "record"
-                }
-            });
-        },
+onPressDecision: function () {
+    this.getOwnerComponent().getRouter().navTo("RouteUsageDecision");
+},
 
-        onPressDecision: function () {
-            this.getOwnerComponent().getRouter().navTo("RouteInspectionLot", {
-                query: {
-                    mode: "decision"
-                }
-            });
-        },
 
         onLogout: function () {
-            var oSessionModel = this.getOwnerComponent().getModel("session");
-            oSessionModel.setData({}); // Clear session
-            this.getOwnerComponent().getRouter().navTo("RouteLogin");
+            this.getOwnerComponent().getModel("session").setData({});
+            this.getOwnerComponent().getRouter().navTo("RouteLogin", {}, true);
         }
     });
 });

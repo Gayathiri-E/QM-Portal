@@ -1,44 +1,62 @@
-<mvc:View controllerName="qmportal.controller.ResultRecording"
+<mvc:View
+    controllerName="qmportal.controller.ResultRecording"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
-    xmlns:core="sap.ui.core"
     displayBlock="true">
-    <Page id="resultRecordingPage" title="Result Recording" showNavButton="true" navButtonPress="onNavBack">
+
+    <Page title="Result Recording" showNavButton="true" navButtonPress="onNavBack">
+
         <content>
-            <ObjectHeader
-                title="{InspectionLot}"
-                number="{LotQuantity}"
-                numberUnit="{UoM}"
-                intro="Inspection Lot">
-                <attributes>
-                    <ObjectAttribute text="{MaterialNumber} - {MaterialDesc}" />
-                    <ObjectAttribute text="Plant: {Plant}" />
-                    <ObjectAttribute text="Status: {= ${UsageDecisionCode} ? 'Decided' : 'Pending' }" />
-                </attributes>
-            </ObjectHeader>
-            
-            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="Record Results">
-                <f:content>
-                    <Label text="Unrestricted Stock" />
-                    <Input value="{UnrestrictedQty}" type="Number" editable="{viewModel>/editable}" />
-                    
-                    <Label text="Blocked Stock" />
-                    <Input value="{BlockedQty}" type="Number" editable="{viewModel>/editable}" />
-                    
-                    <Label text="Production Stock" />
-                    <Input value="{ProductionQty}" type="Number" editable="{viewModel>/editable}" />
-                    
-                    <Label text="Total Recorded" />
-                    <Text text="{= parseFloat(${UnrestrictedQty} || 0) + parseFloat(${BlockedQty} || 0) + parseFloat(${ProductionQty} || 0) }" />
-                </f:content>
-            </f:SimpleForm>
+
+            <!-- SEARCH -->
+            <VBox class="sapUiMediumMargin">
+                <Label text="Search Inspection Lot"/>
+                <HBox>
+                    <Input id="lotInput" width="300px" placeholder="Enter Inspection Lot"/>
+                    <Button text="Search" press="onSearch" type="Emphasized" class="sapUiSmallMarginBegin"/>
+                </HBox>
+            </VBox>
+
+            <!-- RESULT DATA -->
+            <VBox visible="{viewModel>/showData}" class="sapUiMediumMargin">
+
+                <Title text="Record Results"/>
+
+                <f:SimpleForm layout="ResponsiveGridLayout">
+
+    <Label text="Inspection Lot"/>
+    <Text text="{record>/InspectionLot}"/>
+
+    <Label text="Material"/>
+    <Text text="{record>/MaterialNumber}"/>
+
+    <Label text="Plant"/>
+    <Text text="{record>/Plant}"/>
+
+    <Label text="Result Code"/>
+    <Text text="{record>/ResultCode}"/>
+
+    <!-- NEW INPUT FIELDS -->
+    <Label text="Unrestricted Stock Qty"/>
+    <Input type="Number" placeholder="Enter unrestricted stock"/>
+
+    <Label text="Blocked Stock Qty"/>
+    <Input type="Number" placeholder="Enter blocked stock"/>
+
+    <Label text="Quality Stock Qty"/>
+    <Input type="Number" placeholder="Enter quality stock"/>
+
+</f:SimpleForm>
+
+<Button
+    text="Save"
+    type="Emphasized"
+    press="onSave"
+    class="sapUiMediumMarginTop"/>
+
+            </VBox>
+
         </content>
-        <footer>
-            <OverflowToolbar>
-                <ToolbarSpacer/>
-                <Button text="Save Results" type="Emphasized" press="onSave" enabled="{viewModel>/editable}" />
-            </OverflowToolbar>
-        </footer>
     </Page>
 </mvc:View>

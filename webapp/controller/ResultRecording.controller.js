@@ -1,79 +1,54 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/core/routing/History",
-    "sap/m/MessageToast",
+    "sap/ui/model/json/JSONModel",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, History, MessageToast, MessageBox, JSONModel) {
+    "sap/ui/core/BusyIndicator"
+], function (Controller, JSONModel, MessageBox, BusyIndicator) {
     "use strict";
 
     return Controller.extend("qmportal.controller.ResultRecording", {
+
         onInit: function () {
-            var oViewModel = new JSONModel({
-                editable: true
-            });
-            this.getView().setModel(oViewModel, "viewModel");
+            this.getView().setModel(new JSONModel({
+                showData: false
+            }), "viewModel");
 
-            this.getOwnerComponent().getRouter().getRoute("RouteResultRecording").attachPatternMatched(this._onRouteMatched, this);
+            this.getView().setModel(new JSONModel(), "record");
         },
 
-        _onRouteMatched: function (oEvent) {
-            var sLot = oEvent.getParameter("arguments").InspectionLot;
-            this.getView().bindElement({
-                path: "/ZQM_RECORD777('" + sLot + "')",
-                events: {
-                    dataReceived: this._onDataReceived.bind(this)
-                }
-            });
-        },
-
-        _onDataReceived: function (oEvent) {
-            var oData = oEvent.getSource().getBoundContext().getObject();
-            // If UD taken, read-only
-            if (oData && oData.UsageDecisionCode) {
-                this.getView().getModel("viewModel").setProperty("/editable", false);
-                MessageToast.show("Usage Decision already taken. Read-only mode.");
-            } else {
-                this.getView().getModel("viewModel").setProperty("/editable", true);
-            }
-        },
-
-        onSave: function () {
-            var oContext = this.getView().getBindingContext();
-            var oData = oContext.getObject();
-            var fTotal = parseFloat(oData.UnrestrictedQty || 0) + parseFloat(oData.BlockedQty || 0) + parseFloat(oData.ProductionQty || 0);
-
-            if (fTotal > parseFloat(oData.LotQuantity)) {
-                MessageBox.error("Total recorded quantity cannot exceed Lot Quantity (" + oData.LotQuantity + ")");
+        onSearch: function () {
+            var sLot = this.byId("lotInput").getValue();
+            if (!sLot) {
+                MessageBox.error("Enter Inspection Lot");
                 return;
             }
 
             var oModel = this.getView().getModel();
+            var oRecordModel = this.getView().getModel("record");
+            var oViewModel = this.getView().getModel("viewModel");
 
-            // Busy Indicator
-            sap.ui.core.BusyIndicator.show(0);
+            BusyIndicator.show(0);
 
-            oModel.submitChanges({
-                success: function () {
-                    sap.ui.core.BusyIndicator.hide();
-                    MessageToast.show("Results Saved Successfully");
+            oModel.read("/ZQM_RECORD777('" + sLot + "')", {
+                success: function (oData) {
+                    BusyIndicator.hide();
+                    oRecordModel.setData(oData);
+                    oViewModel.setProperty("/showData", true);
                 },
-                error: function (oError) {
-                    sap.ui.core.BusyIndicator.hide();
-                    MessageBox.error("Error saving results");
+                error: function () {
+                    BusyIndicator.hide();
+                    MessageBox.error("No Record found for Inspection Lot " + sLot);
+                    oViewModel.setProperty("/showData", false);
                 }
             });
         },
 
-        onNavBack: function () {
-            var oHistory = History.getInstance();
-            var sPreviousHash = oHistory.getPreviousHash();
+        onSave: function () {
+            MessageBox.success("Saved Successfully");
+        },
 
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                this.getOwnerComponent().getRouter().navTo("RouteDashboard", {}, true);
-            }
+        onNavBack: function () {
+            history.go(-1);
         }
     });
 });

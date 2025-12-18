@@ -110,16 +110,17 @@
           "pattern": "inspection",
           "target": "TargetInspectionLot"
         },
-        {
-          "name": "RouteResultRecording",
-          "pattern": "recording/{InspectionLot}",
-          "target": "TargetResultRecording"
-        },
-        {
-          "name": "RouteUsageDecision",
-          "pattern": "decision/{InspectionLot}",
-          "target": "TargetUsageDecision"
-        }
+      {
+  "name": "RouteResultRecording",
+  "pattern": "recording",
+  "target": "TargetResultRecording"
+},
+{
+  "name": "RouteUsageDecision",
+  "pattern": "usageDecision",
+  "target": "TargetUsageDecision"
+}
+
       ],
       "targets": {
         "TargetLogin": {
